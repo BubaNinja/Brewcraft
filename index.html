@@ -47,6 +47,11 @@ h1,h2,h3 { font-family: var(--serif); font-weight: 400; line-height: 1.15; }
     background-size:256px;
 }
 section,nav,footer { position:relative; z-index:1; }
+.bg-texture {
+    position:fixed; inset:0; z-index:0; pointer-events:none;
+    background: url('images/background.jpg') center/cover fixed;
+    opacity:0.6;
+}
 
 /* ANIMATIONS */
 @keyframes fadeUp { from { opacity:0; transform:translateY(30px); } to { opacity:1; transform:translateY(0); } }
@@ -442,6 +447,7 @@ footer .f-links a:hover { color:var(--coffee); }
 </head>
 <body>
 <div class="bg-noise"></div>
+<div class="bg-texture"></div>
 
 <!-- NAV -->
 <nav id="navbar">
@@ -567,6 +573,16 @@ footer .f-links a:hover { color:var(--coffee); }
                         <option>Эспрессо</option>
                         <option>Раф</option>
                         <option>Матча-латте</option>
+                    </select>
+                </div>
+                <div class="fg">
+                    <label>Когда заберёте</label>
+                    <select name="time" required>
+                        <option value="">Выберите время</option>
+                        <option>Через 15 минут</option>
+                        <option>Через 30 минут</option>
+                        <option>Через 1 час</option>
+                        <option>К определённому времени</option>
                     </select>
                 </div>
                 <button type="submit" class="btn-submit" id="submitBtn">
@@ -707,7 +723,8 @@ function handleSubmit(e) {
     const text = `Предзаказ BREWCRAFT:%0A` +
         `Имя: ${fd.get('name')||'-'}%0A` +
         `Тел: ${fd.get('phone')||'-'}%0A` +
-        `Заказ: ${fd.get('order')||'-'}`;
+        `Заказ: ${fd.get('order')||'-'}%0A` +
+        `Когда: ${fd.get('time')||'-'}`;
     fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${text}`)
         .then(() => showOk(btn, form)).catch(() => showOk(btn, form));
     return;
